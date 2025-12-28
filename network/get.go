@@ -29,9 +29,12 @@ func GetGithubActivities(name string) ([]Activity, error) {
 	if err != nil {
 		return nil, fmt.Errorf("do request: %w", err)
 	}
+	if response.StatusCode != 200 {
+		return nil, fmt.Errorf("%s", response.Status)
+	}
 	defer response.Body.Close()
-
 	body, err := io.ReadAll(response.Body)
+
 	var result []Activity
 	if err = json.Unmarshal(body, &result); err != nil {
 		return nil, fmt.Errorf("parse JSON: %w", err)
