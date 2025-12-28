@@ -25,14 +25,15 @@ func main() {
 	if storage.Exists(filename) {
 		result, err := storage.Load(filename)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
 			return
 		}
 		activities = append(activities, result...)
 	} else {
 		result, err := network.GetGithubActivities(username)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
+			return
 		}
 		activities = append(activities, result...)
 		err = storage.Save(filename, activities)
