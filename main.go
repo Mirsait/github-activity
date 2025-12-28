@@ -10,6 +10,7 @@ import (
 )
 
 type Activity = models.Activity
+type GithubEvent = models.GithubEvent
 
 func main() {
 	args := os.Args[1:]
@@ -42,25 +43,27 @@ func main() {
 	}
 
 	history := buildMap(activities)
-	for outKey, innerMap := range history {
-		for inKey, value := range innerMap {
-			fmt.Printf("- %d %s in %s\n", value, inKey, outKey)
+	for repo, events := range history {
+		for ghEvent, count := range events {
+			text := ghEvent.GetText(repo, count)
+			fmt.Println(text)
 		}
 	}
 }
 
-type History = map[string]map[string]uint
+// repo - event - count
+type History = map[string]map[GithubEvent]uint
 
 func buildMap(activities []Activity) History {
 	history := make(History)
 	for _, act := range activities {
 		repo := act.Repo.Name
-		eventType := act.EventType
+		event, _ := act.GetGithubEvent()
 		if history[repo] == nil {
-			history[repo] = make(map[string]uint)
+			history[repo] = make(map[GithubEvent]uint)
 		}
-		c := history[repo][eventType]
-		history[repo][eventType] = c + 1
+		c := history[repo][event]
+		history[repo][event] = c + 1
 	}
 	return history
 }

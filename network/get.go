@@ -18,7 +18,7 @@ func GetGithubActivities(name string) ([]Activity, error) {
 	}
 
 	// only last 100 events
-	url := fmt.Sprintf("http://api.github.com/users/%s/events", name)
+	url := fmt.Sprintf("http://api.github.com/users/%s/events?per_page=100", name)
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("create request: %w", err)
