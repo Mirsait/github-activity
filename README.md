@@ -5,6 +5,8 @@
 displays a GitHub user's recent activity. It uses the GitHub API to fetch events
 such as commits, issues, pull requests, and other public actions.
 
+[roadmap.sh](https://roadmap.sh/projects/github-user-activity)
+
 ## Features
 - Run directly from the command line.
 - Accept a GitHub username as an argument.
